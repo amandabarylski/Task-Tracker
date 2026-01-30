@@ -1,0 +1,36 @@
+package com.task_tracker.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+//On reviewing my final project, I noticed the exception class.
+//As I liked what I was using it for, I copied it into this project as well.
+
+@SuppressWarnings("serial")
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException{
+
+	private String resourceName;
+	private String fieldName;
+	private Object fieldValue;
+	
+	public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
+		super(String.format("%s not found with %s: %s", resourceName, fieldName, fieldValue));
+		this.resourceName = resourceName;
+		this.fieldName = fieldName;
+		this.fieldValue = fieldValue;
+	}
+
+	public String getResourceName() {
+		return resourceName;
+	}
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public Object getFieldValue() {
+		return fieldValue;
+	}
+	
+}
