@@ -27,9 +27,10 @@ public class Reward {
 	private int cost;
 	
 	//Though rewards are technically attached to the shop, the join column is still user_id as that serves as the shop's id as well.
+	//This made switching to User easier when I removed Shop.
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
-	private Shop shop;
+	private User user;
 }

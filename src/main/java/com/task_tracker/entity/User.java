@@ -12,8 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -34,11 +32,12 @@ public class User {
 	
 	//I used a one to one relationship with a shared primary key as each user has an individual shop attached to them.
 	//This is my first time using a one to one relationship so I am learning as I go.
-	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
-	private Shop shop;
+	//I decided to remove the shop and instead have User be one-to-many with Reward as Shop was an unnecessary extra step.
+//	@EqualsAndHashCode.Exclude
+//	@ToString.Exclude
+//	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//	@PrimaryKeyJoinColumn
+//	private Shop shop;
 	
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
@@ -52,5 +51,11 @@ public class User {
 	@ToString.Exclude
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Category> createdCategories = new ArrayList<>();
+	
+	//When removing Shop I had to have Rewards be tied to Users.
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Reward> rewards = new ArrayList<>();
 
 }

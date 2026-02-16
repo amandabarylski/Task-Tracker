@@ -3,7 +3,6 @@ package com.task_tracker.service;
 import com.task_tracker.entity.Category;
 import com.task_tracker.entity.Day;
 import com.task_tracker.entity.Reward;
-import com.task_tracker.entity.Shop;
 import com.task_tracker.entity.Task;
 import com.task_tracker.entity.User;
 
@@ -26,7 +25,7 @@ public interface TaskService {
 //	
 //	public List<Category> getUserCategories(int userId);
 	
-	public Shop getShopById(int shopId);
+//	public Shop getShopById(int shopId);
 	
 //	public List<Reward> getUserRewards(int userId);
 	
@@ -47,9 +46,12 @@ public interface TaskService {
 	
 	//Put methods
 	//I wanted flexibility to fix any typos or change names or point amounts, 
-	//so every entity besides shop (which has nothing to edit) got a put method.
+	//so every entity besides shop (which has nothing to edit) got at least one put method.
 	
-	public User updateUser(User user, int userId);
+	//I used two separate put methods for User as point changes will happen at different times than the user changing their name.
+	//As other entities don't have that distinction I simply used a general put method for them.
+	//Unfortunately, I was unable to use PutMapping to the same place twice, even with different parameters, and had to combine them.
+	public User updateUser(User user, int pointChange, int userId);
 	
 	public Day updateDay(Day day, int dayId);
 	
