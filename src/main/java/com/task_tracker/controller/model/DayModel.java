@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DayModel {
 	
-	private String dayName;
 	private LocalDate date;
 	private boolean doublePoints;
 	

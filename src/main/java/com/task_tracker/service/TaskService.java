@@ -1,5 +1,9 @@
 package com.task_tracker.service;
 
+import com.task_tracker.controller.model.CategoryModel;
+import com.task_tracker.controller.model.DayModel;
+import com.task_tracker.controller.model.RewardModel;
+import com.task_tracker.controller.model.TaskModel;
 import com.task_tracker.entity.Category;
 import com.task_tracker.entity.Day;
 import com.task_tracker.entity.Reward;
@@ -21,6 +25,11 @@ public interface TaskService {
 	
 	public Task getTaskById(int taskId);
 	
+	//When fixing my other methods I needed the ability to get individual categories and rewards, so I added the get methods for them.
+	public Category getCategoryById(int categoryId);
+	
+	public Reward getRewardById(int rewardId);
+	
 //	public List<Task> getDayTasks(int dayId);
 //	
 //	public List<Category> getUserCategories(int userId);
@@ -33,15 +42,18 @@ public interface TaskService {
 	//Post methods
 	
 	//Part of adding a user will be adding a shop, so I didn't create a separate method.
+	//In the end, I removed shop entirely as it was redundant.
 	public User addUser(User user);
 	
-	public Day addDay(Day day);
+	//After adding the models, I had to go back through and update the post and put methods to utilize them.
+	//I decided to go one at a time as I had to update the implementation and controller as well.
+	public Day addDay(DayModel dayModel);
 	
-	public Category addCategory(Category category);
+	public Category addCategory(CategoryModel categoryModel);
 	
-	public Task addTask(Task task);
+	public Task addTask(TaskModel taskModel);
 	
-	public Reward addReward(Reward reward);
+	public Reward addReward(RewardModel rewardModel);
 	
 	
 	//Put methods
@@ -51,15 +63,16 @@ public interface TaskService {
 	//I used two separate put methods for User as point changes will happen at different times than the user changing their name.
 	//As other entities don't have that distinction I simply used a general put method for them.
 	//Unfortunately, I was unable to use PutMapping to the same place twice, even with different parameters, and had to combine them.
-	public User updateUser(User user, int pointChange, int userId);
+	//I later changed it from requiring a user to requiring a user name.
+	public User updateUser(String userName, int pointChange, int userId);
 	
-	public Day updateDay(Day day, int dayId);
+	public Day updateDay(DayModel dayModel, int dayId);
 	
-	public Category updateCategory(Category category, int categoryId);
+	public Category updateCategory(CategoryModel categoryModel, int categoryId);
 	
-	public Task updateTask(Task task, int taskId);
+	public Task updateTask(TaskModel taskModel, int taskId);
 	
-	public Reward updateReward(Reward reward, int rewardId);
+	public Reward updateReward(RewardModel rewardModel, int rewardId);
 	
 	
 	//Delete methods

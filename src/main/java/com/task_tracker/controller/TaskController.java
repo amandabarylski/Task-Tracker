@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.task_tracker.controller.model.CategoryModel;
+import com.task_tracker.controller.model.DayModel;
+import com.task_tracker.controller.model.RewardModel;
+import com.task_tracker.controller.model.TaskModel;
 import com.task_tracker.entity.Category;
 import com.task_tracker.entity.Day;
 import com.task_tracker.entity.Reward;
@@ -48,52 +53,64 @@ public class TaskController {
 		return new ResponseEntity<User>(taskService.addUser(user), HttpStatus.CREATED);
 	}
 	
+	//Looking back at my previous project, I opted to use the same trick to avoid recursion,
+	//which is adding the object and then using my get method in the created message.
 	@PostMapping("/day")
-	public ResponseEntity<Day> addDay(@RequestBody Day day) {
-		return new ResponseEntity<Day>(taskService.addDay(day), HttpStatus.CREATED);
+	public ResponseEntity<Day> addDay(@RequestBody DayModel dayModel) {
+		Day day = taskService.addDay(dayModel);
+		return new ResponseEntity<Day>(taskService.getDayById(day.getDayId()), HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/category")
-	public ResponseEntity<Category> addCategory(@RequestBody Category category) {
-		return new ResponseEntity<Category>(taskService.addCategory(category), HttpStatus.CREATED);
+	public ResponseEntity<Category> addCategory(@RequestBody CategoryModel categoryModel) {
+		Category category = taskService.addCategory(categoryModel);
+		return new ResponseEntity<Category>(taskService.getCategoryById(category.getCategoryId()), HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/task")
-	public ResponseEntity<Task> addTask(@RequestBody Task task) {
-		return new ResponseEntity<Task>(taskService.addTask(task), HttpStatus.CREATED);
+	public ResponseEntity<Task> addTask(@RequestBody TaskModel taskModel) {
+		Task task = taskService.addTask(taskModel);
+		return new ResponseEntity<Task>(taskService.getTaskById(task.getTaskId()), HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/reward")
-	public ResponseEntity<Reward> addReward(@RequestBody Reward reward) {
-		return new ResponseEntity<Reward>(taskService.addReward(reward), HttpStatus.CREATED);
+	public ResponseEntity<Reward> addReward(@RequestBody RewardModel rewardModel) {
+		Reward reward = taskService.addReward(rewardModel);
+		return new ResponseEntity<Reward>(taskService.getRewardById(reward.getRewardId()), HttpStatus.CREATED);
 	}
 	
 	
 	//Put methods
 	
+	//As an existing user could have lists of other entities in them, I separated the update and return as I did for other entities.
 	@PutMapping("/user/{userId}")
-	public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestBody User user, int pointChange) {
-		return new ResponseEntity<User>(taskService.updateUser(user, pointChange, userId), HttpStatus.OK);
+	public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestParam String userName, @RequestParam int pointChange) {
+		User user = taskService.updateUser(userName, pointChange, userId);
+		return new ResponseEntity<User>(taskService.getUserById(user.getUserId()), HttpStatus.OK);
 	}
 	
 	@PutMapping("/day/{dayId}")
-	public ResponseEntity<Day> updateDay(@PathVariable int dayId, @RequestBody Day day) {
-		return new ResponseEntity<Day>(taskService.updateDay(day, dayId), HttpStatus.OK);
+	public ResponseEntity<Day> updateDay(@PathVariable int dayId, @RequestBody DayModel dayModel) {
+		Day day = taskService.updateDay(dayModel, dayId);
+		return new ResponseEntity<Day>(taskService.getDayById(day.getDayId()), HttpStatus.OK);
 	}
 	
 	@PutMapping("/category/{categoryId}")
-	public ResponseEntity<Category> updateCategory(@PathVariable int categoryId, @RequestBody Category category) {
-		return new ResponseEntity<Category>(taskService.updateCategory(category, categoryId), HttpStatus.OK);
+	public ResponseEntity<Category> updateCategory(@PathVariable int categoryId, @RequestBody CategoryModel categoryModel) {
+		Category category = taskService.updateCategory(categoryModel, categoryId);
+		return new ResponseEntity<Category>(taskService.getCategoryById(category.getCategoryId()), HttpStatus.OK);
 	}
 	
 	@PutMapping("/task/{taskId}")
-	public ResponseEntity<Task> updateTask(@PathVariable int taskId, @RequestBody Task task) {
-		return new ResponseEntity<Task>(taskService.updateTask(task, taskId), HttpStatus.OK);
+	public ResponseEntity<Task> updateTask(@PathVariable int taskId, @RequestBody TaskModel taskModel) {
+		Task task = taskService.updateTask(taskModel, taskId);
+		return new ResponseEntity<Task>(taskService.getTaskById(task.getTaskId()), HttpStatus.OK);
 	}
 	
 	@PutMapping("/reward/{rewardId}")
-	public ResponseEntity<Reward> updateReward(@PathVariable int rewardId, @RequestBody Reward reward) {
-		return new ResponseEntity<Reward>(taskService.updateReward(reward, rewardId), HttpStatus.OK);
+	public ResponseEntity<Reward> updateReward(@PathVariable int rewardId, @RequestBody RewardModel rewardModel) {
+		Reward reward = taskService.updateReward(rewardModel, rewardId);
+		return new ResponseEntity<Reward>(taskService.getRewardById(reward.getRewardId()), HttpStatus.OK);
 	}
 	
 	
